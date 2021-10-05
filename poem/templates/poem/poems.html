@@ -1,0 +1,22 @@
+<html>
+<head>
+    <title>Poems</title>
+</head>
+
+<h1>Poems</h1>
+<table>
+    <thead>
+        <th>Author</th>
+        <th>Title</th>
+    </thead>
+    <tbody>
+        {% for p in poems %}
+        <tr>
+            <td>{{p.author.full_name}}</td>
+            <td><a href="/poems/{{p.id}}">{{p.name}}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</html>
