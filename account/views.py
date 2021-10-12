@@ -3,6 +3,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login
 
+from .tasks import send_email_on_registration
+
 
 def log_user_in(request):
     if request.user.is_authenticated:
@@ -30,6 +32,7 @@ def register(request):
             user = form.save()
             login(request, user)
             next_url = request.POST.get('next')
+            send_email_on_registration.delay()
             return redirect(next_url)
     else:
         form = UserCreationForm()
