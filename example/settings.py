@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from pathlib import Path
-import os
 from dotenv import load_dotenv
+import json
+import os
+from pathlib import Path
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,9 +27,9 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG'].lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = json.loads(os.environ['ALLOWED_HOSTS'])
 
 
 # Application definition
