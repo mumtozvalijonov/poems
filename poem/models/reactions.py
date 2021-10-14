@@ -27,4 +27,3 @@ class Dislike(Reaction):
 
 class Comment(Reaction):
     text = models.TextField()
-
