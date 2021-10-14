@@ -4,7 +4,6 @@ asgiref==3.4.1
 billiard==3.6.4.0
 celery==4.3.0
 Django==3.2.7
-django-celery==3.3.1
 kombu==4.6.11
 python-dotenv==0.19.1
 pytz==2021.1
