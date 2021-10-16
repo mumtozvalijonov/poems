@@ -5,7 +5,7 @@ from django.db.utils import IntegrityError
 
 from poem.forms import CommentForm
 
-from .models import Poem, Like
+from .models import Poem
 
 
 @login_required(login_url='/accounts/login')
