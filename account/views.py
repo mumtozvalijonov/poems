@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.shortcuts import redirect, render
 
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 
 from .tasks import send_email_on_registration
@@ -26,6 +26,12 @@ def log_user_in(request):
     else:
         form = AuthenticationForm()
     return render(request, 'account/login.html', context={'form': form, 'next': request.GET.get('next') or '/poems/'})
+
+
+def log_user_out(request):
+    if request.user.is_authenticated:
+        logout(request)
+    return redirect('login')
 
 
 def register(request):

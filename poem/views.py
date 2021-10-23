@@ -1,9 +1,9 @@
 from django.http.response import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
 
-from poem.forms import CommentForm
+from poem.forms import CommentForm, PoemForm
 
 from .models import Poem
 
@@ -21,6 +21,21 @@ def get_poem_by_id(request, poem_id):
         return render(request, 'poem/poem.html', context={'poem': poem, 'comment_form': CommentForm()})
     return render(request, '404.html')
 
+
+@login_required(login_url='/accounts/login')
+def update_poem_by_id(request, poem_id):
+    poem = Poem.objects.filter(id=poem_id).first()
+    if not poem:
+        return render(request, '404.html')
+    if request.method == 'POST':
+        form = PoemForm(data=request.POST, instance=poem)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('retrieve_poem', kwargs={'poem_id': poem.id}))
+    else:
+        form = PoemForm()
+    return render(request, 'poem/poem_update.html', context={'poem': poem, 'form': form})
+    
 
 @login_required(login_url='/accounts/login')
 def like_poem(request, poem_id):
