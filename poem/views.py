@@ -2,6 +2,7 @@ from django.http.response import HttpResponse
 from django.shortcuts import redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
+from django.db.models import Q
 
 from poem.forms import CommentForm, PoemForm
 
@@ -10,8 +11,31 @@ from .models import Poem
 
 @login_required(login_url='/accounts/login')
 def get_all_poems(request):
-    poems = Poem.objects.all()
-    return render(request, 'poem/poems.html', context={'poems': poems})
+    search = request.GET.get('search', '')
+    sort_by_author = request.GET.get('sort_by_author', 'asc')
+    sort_by_name = request.GET.get('sort_by_name', 'asc')
+    sorting = (
+        'author__last_name' if sort_by_author == 'asc' else '-author__last_name',
+        'name' if sort_by_name == 'asc' else '-name'
+    )
+    search_filter = []
+    if search:
+        search_filter.append(
+            Q(name__icontains=search) |
+            Q(author__first_name__icontains=search) |
+            Q(author__last_name__icontains=search)
+        )
+    poems = Poem.objects.filter(*search_filter).order_by(*sorting)
+    return render(
+        request,
+        'poem/poems.html',
+        context={
+            'poems': poems,
+            'search': search,
+            'sort_by_author': sort_by_author,
+            'sort_by_name': sort_by_name
+        }
+    )
 
 
 @login_required(login_url='/accounts/login')
