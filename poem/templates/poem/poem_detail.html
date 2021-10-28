@@ -12,7 +12,7 @@
         {% endif %}
     </div>
     
-    <h2>{{poem.text}}</h2>
+    <pre>{{poem.text}}</pre>
     
     <div class="container">
         <form method="post" action="{% url 'comment' poem.id %}">
