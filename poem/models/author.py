@@ -6,6 +6,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=50, null=False)
     year_of_birth = models.PositiveIntegerField(null=False)
     year_of_death = models.PositiveIntegerField(null=True)
+    photo = models.ImageField(upload_to='images/', null=True)
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'

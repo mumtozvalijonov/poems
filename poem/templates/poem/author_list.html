@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .clampedText {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4; /* number of lines to show */
+        -webkit-box-orient: vertical;
+    }
+</style>
+
+<div class="container">
+
+<h1 class="text-center">Authors</h1>
+    {% for obj in author_list %}
+    <hr>
+    <div class="row">
+        <div class="col-sm-8">
+            <a href="/poems/authors/{{p.id}}">
+                <p class="font-weight-bold">{{obj.full_name}}</p>
+            </a> 
+        </div>
+        <div class="col-sm-4">
+            {% if obj.photo %}
+            <img class="img-thumbnail" src="{{obj.photo.url}}"/>
+            {% else %}
+            <img class="img-thumbnail" src="/media/images/default.jpeg"/>
+            {% endif %}
+            <p class="font-weight-bold text-center">{{obj.year_of_birth}} - {{obj.year_of_death}}</p>   
+        </div>
+    </div>
+    {% endfor %}
+    
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    {% if page_obj.number < page_obj.paginator.num_pages %}
+                        <a href="?page={{page_obj.paginator.num_pages}}">last</a>
+                    {% endif %}
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

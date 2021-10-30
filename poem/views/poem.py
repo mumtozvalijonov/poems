@@ -1,24 +1,21 @@
 from django.http.response import HttpResponse
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import redirect, render, reverse
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
 from django.db.models import Q
 from django.views.generic import ListView, DetailView, UpdateView
 
-from poem.forms import CommentForm, PoemForm
+from poem.forms import CommentForm
+from poem.mixins import LoginPermissionMixin
 
-from .models import Poem
-
-
-class LoginPermissionMixin(LoginRequiredMixin):
-    login_url = '/accounts/login/'
-    redirect_field_name = 'next'
+from poem.models import Poem
 
 
-class PoemsView(LoginPermissionMixin, ListView):
+
+class PoemListView(LoginPermissionMixin, ListView):
     model = Poem
-    paginate_by = 1
+    paginate_by = 10
     
     def get_queryset(self):
         search = self.request.GET.get('search', '')
