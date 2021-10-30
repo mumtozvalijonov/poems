@@ -7,9 +7,7 @@
 
             <form method="post" style="padding-top: 5%;" action="{% url 'update_poem' poem.id %}">
                 {% csrf_token %}
-                <div class="col text-center">
-                    {{form}}
-                </div>
+                {{ form.as_p }}
                 <div class="col text-center" style="padding-top: 2%;">
                     <input class="text-center" type="submit" value="Update">
                 </div>
